@@ -9,6 +9,8 @@ import worker from './registerServiceWorker' // <- register service worker, disa
 
 Vue.prototype.config = config // <- set config to global scope
 
+Vue.prototype.config.app.gateway = window.gateway;
+
 /* (global) This code is going to tell us, if history mode can be activated on the client, so the application can be consumed without localstorage */
 Vue.prototype.history = () => {
     try {
