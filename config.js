@@ -1,22 +1,19 @@
-let get_gateway_url = () => {
-    if(window.location.host.includes("cloud.ushakov.co")){
-        return "https://" + window.location.host.split('.')[0] + ".gateway.dialogflow.cloud.ushakov.co"
-    }
-
-    else {
-        return "https://dialogflow-web-v2.gateway.dialogflow.cloud.ushakov.co"
-    }
-}
-
 export default {
     app: {
-        gateway: get_gateway_url(), // <- enter your gateway URL here, the function is just a helper function for my cloud integration. You don't normally need it
-        muted: false, // <- mute microphone at start
+        gateway: '', // Set it in window.gateway before loading the build.js script 
+        muted: true, // <- mute microphone at start
         start_suggestions: [], // <- array of suggestions, displayed at the start screen
-        fallback_lang: 'en', // <- fallback language code, if history mode or network is unavailable,
+        fallback_lang: 'it', // <- fallback language code, if history mode or network is unavailable,
         voice: 'native' // <- voice of Text-To-Speech; for reference, see: https://developer.mozilla.org/en-US/docs/Web/API/SpeechSynthesisVoice/voiceURI
     },
     i18n: {
+        it: {
+            welcomeTitle: "Benvenuto su",
+            muteTitle: "Muto",
+            inputTitle: "Scrivi il tuo messaggio",
+            sendTitle: "Invia",
+            microphoneTitle: "Input Vocale"
+        },
         en: {
             welcomeTitle: "Welcome to",
             muteTitle: "Mute Toggle",
