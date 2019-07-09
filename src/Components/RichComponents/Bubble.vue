@@ -1,7 +1,5 @@
 <template>
-    <span class="bubble" :class="{'me': from == 'me', 'loading': loading}">
-        {{text}}
-    </span>
+    <span class="bubble" :class="{'me': from == 'me', 'loading': loading}" v-html="convertLinks" />
 </template>
 
 <style lang="sass" scoped>
@@ -60,6 +58,15 @@
 <script>
 export default {
     name: 'Bubble',
-    props: ['text', 'from', 'loading']
+    props: ['text', 'from', 'loading'],
+
+    computed: {
+        convertLinks: function () {
+            var exp = /(\b(https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/ig;
+            if (this.text) {
+                return this.text.replace(exp, "<a href='$1' target='_blank'>$1</a>");
+            } return this.text;
+        }
+    }
 }
 </script>

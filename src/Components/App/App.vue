@@ -12,11 +12,16 @@
             <!-- Messages Table -->
             <section class="messages" v-else>
                 <table v-for="m in messages" class="message">
-                    <tr>
+                    
+                    <tr v-if="m.queryResult.queryText != 'start'">
                         <!-- My message -->
                         <td><Bubble :text="m.queryResult.queryText" from="me" /></td>
                     </tr>
-                    
+
+                    <tr v-if="m.queryResult.queryText == 'start'">
+                        <td>&nbsp;</td>
+                    </tr>
+
                     <!-- Component iterator (Dialogflow Gateway Feature) -->
                     <tr v-for="component in m.queryResult.fulfillmentMessages">
                         <td>
@@ -59,7 +64,7 @@
         <div id="bottom"></div>
 
         <!-- ChatInput is made for submitting queries and displaying suggestions -->
-        <ChatInput @submit="send" :suggestions="suggestions"></ChatInput>
+        <ChatInput v-if="messages.length > 0" @submit="send" :suggestions="suggestions"></ChatInput>
 
         <!-- Audio toggle (on the top right corner), used to toggle the audio output, default mode is defined in the settings -->
         <div :aria-label="(config.i18n[lang()] && config.i18n[lang()].inputTitle) || config.i18n[config.app.fallback_lang].muteTitle" :title="(config.i18n[lang()] && config.i18n[lang()].inputTitle) || config.i18n[config.app.fallback_lang].muteTitle" class="audio-toggle" @click="muted = !muted">
@@ -196,6 +201,7 @@ export default {
         /* Cache Agent (this will save bandwith) */
         if(this.history() && localStorage.getItem('agent') !== null){
             this.app = JSON.parse(localStorage.getItem('agent'))
+            this.startup()
         }
 
         else {
@@ -205,6 +211,7 @@ export default {
                 if(!agent.error){
                     this.app = agent
                     if(this.history()) localStorage.setItem('agent', JSON.stringify(agent))
+                    this.startup()
                 }
 
                 else {
@@ -212,6 +219,8 @@ export default {
                 }
             })
         }
+
+
     },
     computed: {
         /* The code below is used to extract suggestions from last message, to display it on ChatInput */
@@ -291,7 +300,6 @@ export default {
                 if(!response.error){
                     this.messages.push(response)
                     this.handle(response) // <- trigger the handle function (explanation below)
-                    //console.log(response) // <- (optional) log responses
                 }
 
                 else {
@@ -315,6 +323,11 @@ export default {
                 /* This "hack" is used to format our lang format, to some other lang format (example: en -> en_EN). Mainly for Safari, Firefox and Edge */
                 speech.lang = this.lang() + '-' + this.lang().toUpperCase()
                 if(!this.muted) window.speechSynthesis.speak(speech) // <- if app is not muted, speak out the speech
+            }
+        },
+        startup() {
+            if (this.app && this.messages.length == 0) {
+                this.send('start');
             }
         }
     }
