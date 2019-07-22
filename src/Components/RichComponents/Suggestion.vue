@@ -1,5 +1,5 @@
 <template>
-    <a target="_blank" rel="noopener noreferrer" :href="url" class="suggestion">{{title}}</a>
+    <a target="_blank" data-title="{{title}}" rel="noopener noreferrer" :href="url" class="suggestion">{{title}}</a>
 </template>
 
 <style lang="sass" scoped>
