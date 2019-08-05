@@ -73,7 +73,7 @@ export default {
     watch: {
         /* Save selected language */
         sel_lang(lang){
-            if(this.history()) localStorage.setItem('lang', lang)
+            if(this.history()) customStorage.setItem('lang', lang)
 
             else {
                 this.config.app.fallback_lang = lang

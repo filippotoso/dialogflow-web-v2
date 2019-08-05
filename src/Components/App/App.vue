@@ -184,23 +184,23 @@ export default {
     },
     created(){
         /* If history is enabled, the messages are retrieved from localStorage */
-        if(this.history() && localStorage.getItem('message_history') !== null){
-            this.messages = JSON.parse(localStorage.getItem('message_history'))
+        if(this.history() && customStorage.getItem('message_history') !== null){
+            this.messages = JSON.parse(customStorage.getItem('message_history'))
         }
 
         /* Session should be persistent (in case of page reload, the context should stay) */
-        if(this.history() && localStorage.getItem('session') !== null){
-            this.session = localStorage.getItem('session')
+        if(this.history() && customStorage.getItem('session') !== null){
+            this.session = customStorage.getItem('session')
         }
 
         else {
             this.session = uuidv1()
-            if(this.history()) localStorage.setItem('session', this.session)
+            if(this.history()) customStorage.setItem('session', this.session)
         }
 
         /* Cache Agent (this will save bandwith) */
-        if(this.history() && localStorage.getItem('agent') !== null){
-            this.app = JSON.parse(localStorage.getItem('agent'))
+        if(this.history() && customStorage.getItem('agent') !== null){
+            this.app = JSON.parse(customStorage.getItem('agent'))
             this.startup()
         }
 
@@ -210,7 +210,7 @@ export default {
             .then(agent => {
                 if(!agent.error){
                     this.app = agent
-                    if(this.history()) localStorage.setItem('agent', JSON.stringify(agent))
+                    if(this.history()) customStorage.setItem('agent', JSON.stringify(agent))
                     this.startup()
                 }
 
@@ -247,7 +247,7 @@ export default {
     watch: {
         /* This function is triggered, when new messages arrive */
         messages(messages){
-            if(this.history()) localStorage.setItem('message_history', JSON.stringify(messages)) // <- Save history if the feature is enabled
+            if(this.history()) customStorage.setItem('message_history', JSON.stringify(messages)) // <- Save history if the feature is enabled
         },
         /* This function is triggered, when request is started or finished */
         loading(){
