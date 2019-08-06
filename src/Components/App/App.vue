@@ -39,6 +39,11 @@
                                 <Card v-for="card in component.content" @click.native="send(card.info.key)" :key="card.info.key" :title="card.title" :image="card.image" :subtitle="card.subtitle" :text="card.description" />
                             </div>
 
+                            <!-- Carousel layout and cards -->
+                            <div class="carousel" v-if="component.name == 'BROWSER_CAROUSEL_CARD'">
+                                <Card v-for="card in component.content" :title="card.title" :image="card.image" :subtitle="card.subtitle" :text="card.description" :buttons="card.buttons" />
+                            </div>
+
                             <!-- List -->
                             <List @select="send" :items="component.content.items" :title="component.content.title" v-if="component.name == 'LIST'" />
 
